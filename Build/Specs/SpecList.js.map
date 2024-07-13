@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../Specs/SpecList.js"],
+  "sourcesContent": ["export const VERSION = '1.118';\n"],
+  "mappings": ";AAAO,IAAM,UAAU;",
+  "names": []
+}
