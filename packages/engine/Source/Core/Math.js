@@ -431,17 +431,19 @@ CesiumMath.DEGREES_PER_RADIAN = 180.0 / Math.PI;
 CesiumMath.RADIANS_PER_ARCSECOND = CesiumMath.RADIANS_PER_DEGREE / 3600.0;
 
 /**
- * Converts degrees to radians.
- * @param {number} degrees The angle to convert in degrees.
- * @returns {number} The corresponding angle in radians.
+ * 将角度从度数转换为弧度。
+ * @param {number} degrees 需要转换的角度，以度为单位。
+ * @returns {number} 对应的弧度值。
  */
 CesiumMath.toRadians = function (degrees) {
   //>>includeStart('debug', pragmas.debug);
+  // 检查传入的角度是否已定义，如果未定义则抛出错误
   if (!defined(degrees)) {
-    throw new DeveloperError("degrees is required.");
+    throw new DeveloperError("degrees is required."); // 抛出错误提示：必须提供角度值
   }
   //>>includeEnd('debug');
-  return degrees * CesiumMath.RADIANS_PER_DEGREE;
+  // 将度数转换为弧度并返回结果
+  return degrees * CesiumMath.RADIANS_PER_DEGREE; // 每度对应的弧度值常量:  1度 = π / 180 弧度
 };
 
 /**

@@ -899,51 +899,57 @@ const wgs84RadiiSquared = new Cartesian3(
 );
 
 /**
- * Returns a Cartesian3 position from longitude and latitude values given in radians.
- *
- * @param {number} longitude The longitude, in radians
- * @param {number} latitude The latitude, in radians
- * @param {number} [height=0.0] The height, in meters, above the ellipsoid.
- * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid on which the position lies.
- * @param {Cartesian3} [result] The object onto which to store the result.
- * @returns {Cartesian3} The position
- *
- * @example
- * const position = Cesium.Cartesian3.fromRadians(-2.007, 0.645);
+ * 将经度、纬度和高度转换为笛卡尔坐标（以弧度为单位）。
+ * @param {number} longitude 经度（以弧度为单位）。
+ * @param {number} latitude 纬度（以弧度为单位）。
+ * @param {number} [height=0.0] 高度，默认为0.0。
+ * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] 参考椭球体，默认为WGS84椭球体。
+ * @param {Cartesian3} [result] 用于存储结果的对象，如果未定义则新建一个对象。
+ * @returns {Cartesian3} 转换后的笛卡尔坐标。
  */
-Cartesian3.fromRadians = function (
-  longitude,
-  latitude,
-  height,
-  ellipsoid,
-  result
-) {
+Cartesian3.fromRadians = function (longitude, latitude, height, ellipsoid, result) {
   //>>includeStart('debug', pragmas.debug);
+  // 调试模式下，检查经度和纬度是否为数字类型
   Check.typeOf.number("longitude", longitude);
   Check.typeOf.number("latitude", latitude);
   //>>includeEnd('debug');
 
+  // 如果未定义高度，则默认为0.0
   height = defaultValue(height, 0.0);
-  const radiiSquared = defined(ellipsoid)
-    ? ellipsoid.radiiSquared
-    : wgs84RadiiSquared;
 
+  // 如果未定义椭球体，则使用WGS84椭球体
+  const radiiSquared = defined(ellipsoid) ? ellipsoid.radiiSquared : wgs84RadiiSquared;
+
+  // 计算纬度的余弦值
   const cosLatitude = Math.cos(latitude);
+
+  // 计算笛卡尔坐标的x、y、z分量
   scratchN.x = cosLatitude * Math.cos(longitude);
   scratchN.y = cosLatitude * Math.sin(longitude);
   scratchN.z = Math.sin(latitude);
+
+  // 规范化向量
   scratchN = Cartesian3.normalize(scratchN, scratchN);
 
+  // 计算radiiSquared与规范化向量的分量积
   Cartesian3.multiplyComponents(radiiSquared, scratchN, scratchK);
+
+  // 计算gamma值
   const gamma = Math.sqrt(Cartesian3.dot(scratchN, scratchK));
+
+  // 计算最终坐标
   scratchK = Cartesian3.divideByScalar(scratchK, gamma, scratchK);
   scratchN = Cartesian3.multiplyByScalar(scratchN, height, scratchN);
 
+  // 如果result未定义，则新建一个Cartesian3对象
   if (!defined(result)) {
     result = new Cartesian3();
   }
+
+  // 返回笛卡尔坐标结果
   return Cartesian3.add(scratchK, scratchN, result);
 };
+
 
 /**
  * Returns an array of Cartesian3 positions given an array of longitude and latitude values given in degrees.

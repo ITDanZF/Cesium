@@ -28,7 +28,29 @@
   <body>
     <div id="cesiumContainer"></div>
     <script>
-      const viewer = new Cesium.Viewer("cesiumContainer");
+      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NDgxMTM4NC0yM2U3LTQzODUtYjQ3Ny1mOTEzZTE5YTRhYTAiLCJpZCI6MjE4NzEzLCJpYXQiOjE3MTY5OTUyOTR9.NzCd74tRu1fbkbXnvWgT-YYn_BLPP3P8uqlkwItgb2U'
+      const viewer = new Cesium.Viewer("cesiumContainer", {
+        animation: false,           // 隐藏左下角的动画控件
+        baseLayerPicker: false,     // 隐藏底图选择器
+        navigationHelpButton: false,// 隐藏导航帮助按钮
+        sceneModePicker: false,     // 隐藏场景模式选择器
+        homeButton: false,          // 隐藏主页按钮
+        geocoder: false,            // 隐藏地理编码器
+        fullscreenButton: false,    // 隐藏全屏按钮
+        timeline: false,            // 隐藏时间轴
+      });
+
+    // 设置相机的位置：精度，维度，高度
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(8.67, 46.72, 4500),
+        orientation: {
+          pitch: Cesium.Math.toRadians(-20)
+        }
+      });
+
+      // Entity
+      viewer.entities.add()
+
     </script>
   </body>
 </html>

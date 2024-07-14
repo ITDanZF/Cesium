@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @import "app.css";
+    </style>
+</head>
+<body>
+<div id="cesiumContainer"></div>
+<script src="../Build/CesiumUnminified/Cesium.js"></script>
+<script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1NDgxMTM4NC0yM2U3LTQzODUtYjQ3Ny1mOTEzZTE5YTRhYTAiLCJpZCI6MjE4NzEzLCJpYXQiOjE3MTY5OTUyOTR9.NzCd74tRu1fbkbXnvWgT-YYn_BLPP3P8uqlkwItgb2U'
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+        animation: false,           // 隐藏左下角的动画控件
+        baseLayerPicker: false,     // 隐藏底图选择器
+        navigationHelpButton: false,// 隐藏导航帮助按钮
+        sceneModePicker: false,     // 隐藏场景模式选择器
+        homeButton: false,          // 隐藏主页按钮
+        geocoder: false,            // 隐藏地理编码器
+        fullscreenButton: false,    // 隐藏全屏按钮
+        timeline: false,            // 隐藏时间轴
+    });
+    const destination = [113.2644, 23.1291, 5000]
+
+    // 设置相机位置
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(113.2644, 23.1291, 5000),
+        orientation: {
+            pitch: Cesium.Math.toRadians(-20)
+        }
+    })
+
+    // 绘画一个点
+    viewer.entities.add({
+        name: 'Guangzhou Point',
+        position: Cesium.Cartesian3.fromDegrees(113.2644, 23.1291, 100),
+        point: {
+            pixelSize: 10,
+            color: Cesium.Color.BLUE,
+            outlineColor: Cesium.Color.WHITE,
+            outlineWidth: 2
+        }
+    })
+
+    // 添加一条连接点的线实体
+    const lineEntity = viewer.entities.add({
+        name: 'Guangzhou Line',
+        polyline: {
+            positions: [
+                Cesium.Cartesian3.fromDegrees(113.2644, 23.1291, 100),
+                Cesium.Cartesian3.fromDegrees(113.2644, 23.0, 500)  // 修改第二个点的经纬度
+            ],
+            width: 5,
+            material: Cesium.Color.RED
+        }
+    });
+</script>
+</body>
+</html>
